@@ -1,0 +1,48 @@
+server:
+  port: 8022
+#  servlet:
+#    context-path: /provider
+  use-forward-headers: true
+  tomcat:
+    port-header: X-Forwarded-Port
+    protocol-header: X-Forwarded-Proto
+    protocol-header-https-value: https
+    remote-ip-header: X-Forwarded-For
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    name: provider      # 服务名称
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+feign:
+  hystrix:
+    enabled: true
+    client:
+        config:
+          default:
+            connectTimeout: 45000
+            readTimeout: 45000
+#            errorDecoder: com.example.demo.configuration.SmartAntErrorDecoder
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            strategy: SEMAPHORE
+            timeoutInMilliseconds: 6000
+
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
